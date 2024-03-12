@@ -15,15 +15,19 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 import { Roles } from '../auth/roles.decorator';
 import { RolesGuard } from 'src/auth/roles.guard';
+import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 
 @Controller('applications')
 @UseGuards(JwtAuthGuard)
 export class ApplicationsController {
   constructor(private readonly applicationsService: ApplicationsService) {}
 
-  /**
-   * Saves an application
-   */
+  @ApiOkResponse({
+    description: 'The saved entity',
+  })
+  @ApiOperation({
+    summary: 'Saves an application',
+  })
   @Post()
   @HttpCode(200)
   async submitApplication(
@@ -34,9 +38,13 @@ export class ApplicationsController {
     return await this.applicationsService.submitApplication(body);
   }
 
-  /**
-   * [ADMIN ONLY] Returns all the saved applications
-   */
+  @ApiOkResponse({
+    description: 'A list of all the applications',
+  })
+  @ApiOperation({
+    summary:
+      'Admin role only. Obtains all the applications that are saved in the system',
+  })
   @Get()
   @HttpCode(200)
   @Roles('Admin')
@@ -45,9 +53,12 @@ export class ApplicationsController {
     return await this.applicationsService.find();
   }
 
-  /**
-   * Returns a specific application
-   */
+  @ApiOkResponse({
+    description: 'The found application',
+  })
+  @ApiOperation({
+    summary: 'Obtains an application by its id',
+  })
   @Get(':id')
   @HttpCode(200)
   async getOne(@Param('id') id: string): Promise<ApplicationModel> {

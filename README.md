@@ -74,6 +74,38 @@ This will start the database along with the application to avoid installing a lo
 
 Since the application uses TypeORM as the ORM, it should populate the database automatically by running the existing migrations in the codebase
 
+## Consuming API Service with Postman
+
+### Overview
+
+This guide provides the steps to consume the API service using (for example) Postman.
+
+### Prerequisites
+
+- **Postman**: Ensure you have Postman installed on your system. If not, download and install it from [Postman's official website](https://www.postman.com/downloads/).
+
+### Steps
+
+1. Make sure that you have a valid JWT to make requests to the app. For that, you need to first register a new user by hitting the method:
+
+    `/swagger#/default/UsersController_register`
+
+    Alternatively, you could log in if you have an existing user in the database by calling the Log In Method
+
+2. Make any of the other requests by selecting the `Bearer` auth method and populating it with the previously obtained token. Bear in mind that it has a validity period of one hour. So if it gets expired you'll have to generate a new one. 
+
+### Tips
+
+- **Organize Requests**: Group similar requests into folders within the Postman collection for better organization and clarity.
+  
+- **Use Variables**: Utilize Postman variables to store dynamic values such as authentication tokens, response data, or environment-specific values.
+  
+- **Explore Postman Features**: Postman offers various features like pre-request scripts, tests, and mock servers. Explore these features to enhance your API testing and development workflow.
+
+### Conclusion
+
+By following these steps, you can effectively consume API services using Postman, streamlining the testing and integration process.
+
 ## License
 
 Nest is [MIT licensed](LICENSE).
