@@ -4,6 +4,7 @@ import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  //this is used to support class validations, in order to enforce some parameters to be not-null or with specific values
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   await app.listen(3000);
 }

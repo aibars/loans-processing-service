@@ -34,6 +34,8 @@ $ yarn install
 
 ## Running the app
 
+In case you don't want to use docker, you should run one of the following commands locally: 
+
 ```bash
 # development
 $ yarn run start
@@ -64,15 +66,13 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 ## Docker
 
-Build the container with 
-
-`docker-compose build`
-
-and then run with 
+To run the container, first ensure that Docker is installed in your environment, then run:
 
 `docker-compose up`
 
 This will start the database along with the application to avoid installing a local PostgreSQL server.
+
+Since the application uses TypeORM as the ORM, it should populate the database automatically by running the existing migrations in the codebase
 
 ## License
 

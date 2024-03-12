@@ -8,6 +8,9 @@ import * as jwt from 'jsonwebtoken';
 import { Role } from 'src/typeorm/entities/role';
 import { jwtConstants } from 'src/auth/constants';
 
+/**
+ * Service related to user operations such as log in a register
+ */
 @Injectable()
 export class UsersService {
   constructor(
@@ -46,6 +49,11 @@ export class UsersService {
     }
   }
 
+  /**
+   * Does the logging in. That is, validates the username and password and also obtains the role associated to it
+   * @param loginUserDto The object containing the user's details
+   * @returns the token generated after that user
+   */
   public async loginUser(loginUserDto: LoginUserDto) {
     try {
       const user = await this.findByUsernameAndPassword(
@@ -61,6 +69,14 @@ export class UsersService {
     }
   }
 
+  /**
+   * This function generates a JWT token with the provided username and role,
+   * ensuring secure authentication by incorporating an expiration time of 1 hour.
+   * //TODO: expiration could be made configurable
+   * @param username the email of the suer
+   * @param role the role name
+   * @returns A JWT object with the encrypted data
+   */
   private generateToken(username: string, role: string): string {
     const payload = { username, role };
     return jwt.sign(payload, jwtConstants.secret, { expiresIn: '1h' });

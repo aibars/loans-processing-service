@@ -15,6 +15,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
+  /**
+   * This method obtains the user from the db and checks if the user exists in the db
+   */
   async validate(payload): Promise<User> {
     const user = await this.usersService.findByUsernameAndPassword(
       payload.username,

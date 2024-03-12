@@ -5,6 +5,9 @@ import { Application } from 'src/typeorm/entities/application';
 import { Repository } from 'typeorm';
 import { User } from 'src/typeorm/entities/user';
 
+/**
+ * Methods related to applications processing
+ */
 @Injectable()
 export class ApplicationsService {
   constructor(
@@ -14,6 +17,11 @@ export class ApplicationsService {
     private readonly usersRepository: Repository<User>,
   ) {}
 
+  /**
+   * Creates an application entity and persists it into the database
+   * @param model the object with the application definition
+   * @returns the saved object
+   */
   public async submitApplication(
     model: ApplicationDto,
   ): Promise<ApplicationModel> {

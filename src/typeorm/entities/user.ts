@@ -1,6 +1,9 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Role } from './role';
 
+/**
+ * The user database entity
+ */
 @Entity({ name: 'users' })
 export class User {
   @PrimaryGeneratedColumn('uuid')

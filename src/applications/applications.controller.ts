@@ -21,6 +21,9 @@ import { RolesGuard } from 'src/auth/roles.guard';
 export class ApplicationsController {
   constructor(private readonly applicationsService: ApplicationsService) {}
 
+  /**
+   * Saves an application
+   */
   @Post()
   @HttpCode(200)
   async submitApplication(
@@ -31,6 +34,9 @@ export class ApplicationsController {
     return await this.applicationsService.submitApplication(body);
   }
 
+  /**
+   * [ADMIN ONLY] Returns all the saved applications
+   */
   @Get()
   @HttpCode(200)
   @Roles('Admin')
@@ -39,6 +45,9 @@ export class ApplicationsController {
     return await this.applicationsService.find();
   }
 
+  /**
+   * Returns a specific application
+   */
   @Get(':id')
   @HttpCode(200)
   async getOne(@Param('id') id: string): Promise<ApplicationModel> {

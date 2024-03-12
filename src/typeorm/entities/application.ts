@@ -7,6 +7,9 @@ import {
 } from 'typeorm';
 import { User } from './user';
 
+/**
+ * The application entity that maps to the table in the database
+ */
 @Entity({ name: 'applications' })
 export class Application {
   @PrimaryGeneratedColumn('uuid')
