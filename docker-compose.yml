@@ -1,38 +1,36 @@
-version: '3.8'
+version: '3.5'
 
 services:
-  postgres:
-    image: postgres:latest
-    container_name: loan-processing-service-db
+  db:
+    image: postgres
+    restart: always
     environment:
-      POSTGRES_DB: loans
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123
+      POSTGRES_DB: loans
+      POSTGRES_SSL: false
+    container_name: loans-service-db
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
-    networks:
-      - my-network
-  nestjs-app:
+      - '5432:5432'
+
+  app:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: loan-processing-service
+    container_name: loans-service-app
     environment:
       NODE_ENV: development
-      POSTGRES_HOST: postgres
+      POSTGRES_HOST: db
       POSTGRES_PORT: 5432
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123
       POSTGRES_DB: loans
-    networks:
-      - my-network
+      POSTGRES_SSL: false
     ports:
-      - "3000:3000"
+      - '3000:3000'
+    depends_on:
+      - db
     volumes:
       - ./src:/app/src
-    depends_on:
-      - postgres
-
-networks:
-  my-network:
-    driver: bridge

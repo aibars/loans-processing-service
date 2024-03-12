@@ -12,4 +12,5 @@ export const AppDataSource = new DataSource({
   entities: ['src/typeorm/entities/**/*{.js,.ts}'],
   migrationsTableName: 'migrations',
   migrations: ['src/typeorm/migrations/**/*{.js,.ts}'],
+  ssl: false,
 });

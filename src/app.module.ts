@@ -33,7 +33,7 @@ import { Application } from './typeorm/entities/application';
         cli: {
           migrationsDir: __dirname + '/typeorm/migrations',
         },
-        ssl: !configService.isDevelopment(),
+        ssl: false,
         logging: true,
       }),
       inject: [ConfigService],
