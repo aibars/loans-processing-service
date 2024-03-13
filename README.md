@@ -80,6 +80,8 @@ For example if you are running the app locally it'll be `http://localhost:300/sw
 
 In there, you will find all the exposed API endpoints with their security requirements (whether they are public or required a valid token), as well as the return and input objects.
 
+Using the information there, you can make requests by using a client such as Postman, Insomnia, cURL, etc. 
+
 ## License
 
 Nest is [MIT licensed](LICENSE).
