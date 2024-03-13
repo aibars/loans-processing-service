@@ -43,68 +43,42 @@ $ yarn run start
 # watch mode
 $ yarn run start:dev
 
-# production mode
-$ yarn run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
+# debug mode
+$ yarn run start:debug
 ```
 
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-## Docker
+## Running the app
 
-To run the container, first ensure that Docker is installed in your environment, then run:
+The application is started with Docker Compose. The base configuration can be found in the docker-compose.yml file.
+To use Docker, you need root privileges. You may need to invoke the commands with sudo.
+So, to run the app you may invoke one of the following commands: 
 
-`docker-compose up`
+```
+# Start the app in foreground
+docker-compose up
+
+# Start the app in background
+docker-compose up -d
+```
 
 This will start the database along with the application to avoid installing a local PostgreSQL server.
 
 Since the application uses TypeORM as the ORM, it should populate the database automatically by running the existing migrations in the codebase
 
-## Consuming API Service with Postman
+## API Documentation
 
 ### Overview
 
-This guide provides the steps to consume the API service using (for example) Postman.
+The documentation is generated automatically using Swagger. Swagger is a set of open-source tools built around the OpenAPI Specification that can help you design, build, document and consume REST APIs.
 
-### Prerequisites
+The Swagger URL for this project is accessed by navigating the page `/swagger`.
+For example if you are running the app locally it'll be `http://localhost:300/swagger`
 
-- **Postman**: Ensure you have Postman installed on your system. If not, download and install it from [Postman's official website](https://www.postman.com/downloads/).
-
-### Steps
-
-1. Make sure that you have a valid JWT to make requests to the app. For that, you need to first register a new user by hitting the method:
-
-    `/swagger#/default/UsersController_register`
-
-    Alternatively, you could log in if you have an existing user in the database by calling the Log In Method
-
-2. Make any of the other requests by selecting the `Bearer` auth method and populating it with the previously obtained token. Bear in mind that it has a validity period of one hour. So if it gets expired you'll have to generate a new one. 
-
-### Tips
-
-- **Organize Requests**: Group similar requests into folders within the Postman collection for better organization and clarity.
-  
-- **Use Variables**: Utilize Postman variables to store dynamic values such as authentication tokens, response data, or environment-specific values.
-  
-- **Explore Postman Features**: Postman offers various features like pre-request scripts, tests, and mock servers. Explore these features to enhance your API testing and development workflow.
-
-### Conclusion
-
-By following these steps, you can effectively consume API services using Postman, streamlining the testing and integration process.
+In there, you will find all the exposed API endpoints with their security requirements (whether they are public or required a valid token), as well as the return and input objects.
 
 ## License
 
