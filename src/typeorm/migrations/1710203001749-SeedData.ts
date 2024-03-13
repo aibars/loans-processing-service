@@ -1,15 +1,18 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
 export class SeedData1710203001749 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash('123', salt);
     const sql = `
         --ROLES
         INSERT INTO public.roles (id, "name") VALUES(1, 'Admin');
         INSERT INTO public.roles (id, "name") VALUES(2, 'Applicant');
 
         --USERS
-        INSERT INTO public.users (id, username, "password", "roleId") VALUES(uuid_generate_v4(), 'agustin.ibars@gmail.com', '123', 1);
-        INSERT INTO public.users (id, username, "password", "roleId") VALUES(uuid_generate_v4(), 'ibars_2@gmail.com', '123', 2);
+        INSERT INTO public.users (id, username, "password", "roleId") VALUES(uuid_generate_v4(), 'agustin.ibars@gmail.com', '${hash}', 1);
+        INSERT INTO public.users (id, username, "password", "roleId") VALUES(uuid_generate_v4(), 'ibars_2@gmail.com', '${hash}', 2);
 
 
         -- APPLICATIONS

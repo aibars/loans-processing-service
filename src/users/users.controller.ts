@@ -17,8 +17,8 @@ export class UsersController {
   })
   @Post('register')
   async register(@Body() createUserDto: CreateUserDto) {
-    const newUser = await this.usersService.registerUser(createUserDto);
-    return { message: 'User registered successfully', user: newUser };
+    await this.usersService.registerUser(createUserDto);
+    return { message: 'User successfully registered' };
   }
 
   @ApiOkResponse({

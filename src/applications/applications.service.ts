@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ApplicationDto, ApplicationModel } from './types';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Application } from 'src/typeorm/entities/application';
@@ -30,7 +30,8 @@ export class ApplicationsService {
         where: { id: model.createdBy },
       });
 
-      if (!user) throw new Error('Error with application submission');
+      if (!user)
+        throw new HttpException('user not found', HttpStatus.UNAUTHORIZED);
 
       const record = {
         ...model,
@@ -39,8 +40,7 @@ export class ApplicationsService {
         createdBy: user,
       };
 
-      const savedEntity: Application =
-        await this.applicationRepository.save(record);
+      const savedEntity = await this.applicationRepository.save(record);
 
       return {
         name: savedEntity.name,
@@ -50,7 +50,7 @@ export class ApplicationsService {
         createdBy: savedEntity.createdBy.username,
       };
     } catch (err) {
-      throw err;
+      throw new HttpException(err, HttpStatus.FORBIDDEN);
     }
   }
 
@@ -79,7 +79,7 @@ export class ApplicationsService {
         createdBy: a.createdBy.username,
       }));
     } catch (err) {
-      throw err;
+      throw new HttpException(err, HttpStatus.FORBIDDEN);
     }
   }
 }

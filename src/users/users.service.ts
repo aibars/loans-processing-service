@@ -1,10 +1,11 @@
 // users.service.ts
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/typeorm/entities/user';
 import { Repository } from 'typeorm';
 import { CreateUserDto, LoginUserDto } from './types';
 import * as jwt from 'jsonwebtoken';
+import * as bcrypt from 'bcrypt';
 import { Role } from 'src/typeorm/entities/role';
 import { jwtConstants } from 'src/auth/constants';
 
@@ -24,28 +25,45 @@ export class UsersService {
     username: string,
     password: string,
   ): Promise<User> {
-    //todo: password should be encrypted here
     const user = await this.userRepository.findOne({
-      where: { username, password },
+      where: { username },
       relations: ['role'],
     });
-
     if (!user) throw new Error('user not found');
 
+    const passwordsMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordsMatch) throw new Error('user not found');
     return user;
   }
 
   public async registerUser(createUserDto: CreateUserDto) {
     try {
+      const user = await this.userRepository.findOneBy({
+        username: createUserDto.username,
+      });
+
+      if (user) throw new Error('user already registered');
+
+      if (createUserDto.role === 'Admin') {
+        throw new Error('Only admins can create admin users');
+      }
+
       const role = await this.roleRepository.findOne({
         where: { name: createUserDto.role },
       });
       if (!role) throw new Error('Role not found');
-      const newUser = { id: null, ...createUserDto, role };
+
+      const salt = await bcrypt.genSalt(10);
+      const hash = await bcrypt.hash(createUserDto.password, salt);
+      const newUser = {
+        ...createUserDto,
+        role,
+        password: hash,
+      };
       this.userRepository.save(newUser);
-      return newUser;
     } catch (err) {
-      throw err;
+      throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -65,7 +83,7 @@ export class UsersService {
       const token = this.generateToken(user.username, user.role.name);
       return token;
     } catch (err) {
-      throw err;
+      throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
     }
   }
 
